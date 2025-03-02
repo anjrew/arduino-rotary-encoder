@@ -1,22 +1,17 @@
-volatile int encoderPos = 0;       // counts the number of detents (steps)
-volatile int lastEncoded = 0;      // holds previous encoder state
-
-const int pinA = 2;                // encoder channel A (CLK)
-const int pinB = 3;                // encoder channel B (DT)
+volatile int encoderPos = 0;
+volatile int lastEncoded = 0;
+const int pinA = 2; // Yellow wire, Channel A (CLK)
+const int pinB = 3; // Blue wire, Channel B (DT)
 
 void setup() {
-  pinMode(pinA, INPUT_PULLUP);     // use internal pull-ups
+  pinMode(pinA, INPUT_PULLUP);
   pinMode(pinB, INPUT_PULLUP);
-  Serial.begin(9600);
-  
-  // Attach interrupts to both encoder pins.
   attachInterrupt(digitalPinToInterrupt(pinA), updateEncoder, CHANGE);
   attachInterrupt(digitalPinToInterrupt(pinB), updateEncoder, CHANGE);
+  Serial.begin(9600);
 }
 
 void loop() {
-  // Print the current encoder position every 100ms.
-  Serial.print("Position: ");
   Serial.println(encoderPos);
   delay(100);
 }
