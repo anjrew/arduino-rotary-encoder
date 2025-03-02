@@ -2,27 +2,18 @@ volatile int encoderPos = 0;
 volatile int lastEncoded = 0;
 const int pinA = 2; // Yellow wire, Channel A (CLK)
 const int pinB = 3; // Blue wire, Channel B (DT)
-volatile bool expectedAHigh = 0; // If true line A was expected high
 
 void setup() {
-  pinMode(pinA, INPUT);
-  pinMode(pinB, INPUT);
-  attachInterrupt(digitalPinToInterrupt(pinA), updatePinA, CHANGE);
-  attachInterrupt(digitalPinToInterrupt(pinB), updatePinB, CHANGE);
+  pinMode(pinA, INPUT_PULLUP);
+  pinMode(pinB, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(pinA), updateEncoder, CHANGE);
+  attachInterrupt(digitalPinToInterrupt(pinB), updateEncoder, CHANGE);
   Serial.begin(9600);
 }
 
 void loop() {
-  // Serial.println(encoderPos);
-  delay(100);
-}
-
-void updatePinA() {
-  Serial.println("Line A changed");
-}
-
-void updatePinB() {
-  Serial.println("Line B changed");
+  Serial.println(encoderPos);
+  delay(10);
 }
 
 void updateEncoder() {
@@ -33,31 +24,10 @@ void updateEncoder() {
   int sum = (lastEncoded << 2) | encoded;
   
   // Determine rotation direction using a state transition table:
-
-  lastEncoded = encoded;
-
-  bool incrementing = encoderPos > lastEncoded;
-
-  if (incrementing)
-  {
+  if(sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011)
     encoderPos++;
-  }
-  else
-  {
-     encoderPos--;
-  }
-
-
-  Serial.print("Position: ");
-  Serial.println(encoderPos);
-  Serial.print("MSB: ");
-    Serial.print(MSB);
-    Serial.print(", LSB: ");
-    Serial.print(LSB);
-    Serial.print(", encoded: ");
-    Serial.print(encoded);
-    Serial.print(", sum: ");
-    Serial.println(sum);
-    if(encoderPos > lastEncoded) Serial.println("Incrementing position");
-    else if(encoderPos < lastEncoded) Serial.println("Decrementing position");
+  if(sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000)
+    encoderPos--;
+    
+  lastEncoded = encoded;
 }
