@@ -12,7 +12,7 @@ void setup() {
 }
 
 void loop() {
-  Serial.println(encoderPos);
+  // Serial.println(encoderPos);
   delay(100);
 }
 
@@ -23,11 +23,31 @@ void updateEncoder() {
   int encoded = (MSB << 1) | LSB;
   int sum = (lastEncoded << 2) | encoded;
   
-  // Determine rotation direction using a state transition table:
-  if(sum == 0b1101 || sum == 0b0100 || sum == 0b0010 || sum == 0b1011)
-    encoderPos++;
-  if(sum == 0b1110 || sum == 0b0111 || sum == 0b0001 || sum == 0b1000)
-    encoderPos--;
-    
+
   lastEncoded = encoded;
+
+  bool incrementing = encoderPos > lastEncoded;
+
+  if (incrementing)
+  {
+    encoderPos++;
+  }
+  else
+  {
+     encoderPos--;
+  }
+
+
+  Serial.print("Position: ");
+  Serial.println(encoderPos);
+  Serial.print("MSB: ");
+    Serial.print(MSB);
+    Serial.print(", LSB: ");
+    Serial.print(LSB);
+    Serial.print(", encoded: ");
+    Serial.print(encoded);
+    Serial.print(", sum: ");
+    Serial.println(sum);
+    if(encoderPos > lastEncoded) Serial.println("Incrementing position");
+    else if(encoderPos < lastEncoded) Serial.println("Decrementing position");
 }
