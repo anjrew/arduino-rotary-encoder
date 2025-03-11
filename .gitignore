@@ -30,3 +30,76 @@
 *.exe
 *.out
 *.app
+
+# Arduino specific files
+*.hex
+*.elf
+*.bin
+*.eep
+*.lss
+*.map
+*.sym
+*.d
+*.o
+*.a
+*.lst
+
+# Arduino build directory
+build/
+
+# Arduino libraries
+libraries/
+
+# Arduino IDE files
+.vscode/
+.idea/
+
+# Operating system files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# C/C++ files that might get created
+*.slo
+*.lo
+*.o
+*.obj
+*.gch
+*.pch
+*.so
+*.dylib
+*.dll
+*.lai
+*.la
+*.a
+*.lib
+*.exe
+*.out
+*.app
+
+# Backup files
+*.bak
+*~
+*.swp
+*.swo
+
+# Compiled Python files
+*.pyc
+__pycache__/
+
+# Debug files
+debug.txt
+*.log
+
+# Config files that may contain sensitive information
+config.h
+
+# Generated files
+*.generated.*
+
+# Platform-specific binaries
+*.bin.*
